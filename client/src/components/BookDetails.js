@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { getBookQuery } from '../queries/queries';
 import { graphql } from 'react-apollo';
+import NoInternet from './NoInternet';
 
 class BookDetails extends Component {
 	displayBookDetails() {
 		const { book } = this.props.data;
-		if (book) {
+		if (!window.navigator.onLine) {
+			return <NoInternet />;
+		} else if (book) {
 			return (
 				<div>
 					<p>
@@ -23,7 +26,7 @@ class BookDetails extends Component {
 					<p>
 						<strong>Other books by {book.author.name}</strong>
 					</p>
-					{book.author.books.map(book => {
+					{book.author.books.map((book) => {
 						return <li key={book.id}>{book.name}</li>;
 					})}
 				</div>
@@ -47,7 +50,7 @@ class BookDetails extends Component {
 }
 
 export default graphql(getBookQuery, {
-	options: props => {
+	options: (props) => {
 		return {
 			variables: {
 				id: props.bookid,

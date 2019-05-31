@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { getBooksQuery } from '../queries/queries';
 import { graphql } from 'react-apollo';
 import BookDetails from './BookDetails';
+import Loader from './Loader';
+import NoInternet from './NoInternet';
 
 class BookList extends Component {
 	constructor(props) {
@@ -11,23 +13,35 @@ class BookList extends Component {
 		};
 	}
 	books() {
-		let data = this.props.data;
+		const data = this.props.data;
+
+		if (!window.navigator.onLine) {
+			return <NoInternet />;
+		}
 		if (data.loading) {
-			return <div>Loading...</div>;
+			return (
+				<div>
+					<Loader />
+				</div>
+			);
 		} else {
-			return data.books.map((book) => {
-				return (
-					<div
-						key={book.id}
-						className="card mt-2"
-						onClick={(e) => {
-							this.setState({ selected: book.id });
-						}}
-					>
-						<div className="card-body">{book.name}</div>
-					</div>
-				);
-			});
+			return data.books.length !== 0 ? (
+				data.books.map((book) => {
+					return (
+						<div
+							key={book.id}
+							className="card mt-2 book"
+							onClick={(e) => {
+								this.setState({ selected: book.id });
+							}}
+						>
+							<div className="card-body">{book.name}</div>
+						</div>
+					);
+				})
+			) : (
+				<div>No books found</div>
+			);
 		}
 	}
 	render() {

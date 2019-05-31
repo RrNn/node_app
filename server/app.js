@@ -8,9 +8,9 @@ const app = express();
 
 app.use(cors());
 
-//this is where you'll put your dataabse settings (recommended using mLab, read their docs on how to set it up)
-//An example would be "mongodb://<dbuser>:<dbpassword>@ds153778.mlab.com:53778/db-name"
-mongoose.connect('<link to database>');
+mongoose.connect(
+	'mongodb://richard:lalala546@ds153778.mlab.com:53778/gql-ninja'
+);
 
 mongoose.connection.once('open', () => {
 	console.log('Connected to mLab database');
