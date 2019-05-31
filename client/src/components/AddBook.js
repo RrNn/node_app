@@ -17,17 +17,15 @@ class AddBook extends Component {
 	}
 	authors() {
 		var data = this.props.getAuthorsQuery;
-		if (data.loading) {
-			return <option disabled>Loading Authors...</option>;
-		} else {
-			return data.authors.map(author => {
-				return (
-					<option key={author.id} value={author.id}>
-						{author.name}
-					</option>
-				);
-			});
-		}
+		return data.authors
+			? data.authors.map((author) => {
+					return (
+						<option key={author.id} value={author.id}>
+							{author.name}
+						</option>
+					);
+			  })
+			: [];
 	}
 	onSubmit(e) {
 		e.preventDefault();
@@ -45,20 +43,14 @@ class AddBook extends Component {
 		return (
 			<div className="container">
 				<legend className="text-center">Add Book</legend>
-				<form
-					action=""
-					method="POST"
-					onSubmit={this.onSubmit.bind(this)}
-				>
+				<form action="" method="POST" onSubmit={this.onSubmit.bind(this)}>
 					<legend>Form title</legend>
 
 					<div className="form-group">
 						<input
 							type="text"
 							className="form-control"
-							onChange={e =>
-								this.setState({ name: e.target.value })
-							}
+							onChange={(e) => this.setState({ name: e.target.value })}
 							placeholder="Book Title"
 						/>
 					</div>
@@ -66,18 +58,14 @@ class AddBook extends Component {
 						<input
 							type="text"
 							className="form-control"
-							onChange={e =>
-								this.setState({ genre: e.target.value })
-							}
+							onChange={(e) => this.setState({ genre: e.target.value })}
 							placeholder="Book Genre "
 						/>
 					</div>
 					<div className="form-group">
 						<select
 							className="form-control"
-							onChange={e =>
-								this.setState({ authorId: e.target.value })
-							}
+							onChange={(e) => this.setState({ authorId: e.target.value })}
 						>
 							<option>Select author...</option>
 							{this.authors()}
@@ -94,7 +82,7 @@ class AddBook extends Component {
 
 export default compose(
 	graphql(getAuthorsQuery, { name: 'getAuthorsQuery' }),
-	graphql(addBookMutation, { name: 'addBookMutation' }),
+	graphql(addBookMutation, { name: 'addBookMutation' })
 )(AddBook);
 
 // export default graphql(getAuthorsQuery)(AddBook);
