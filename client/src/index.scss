@@ -1,0 +1,66 @@
+@import '../node_modules/bootstrap/dist/css/bootstrap.css';
+
+nav {
+  border-bottom: 1px solid #9c9c9c;
+  padding: 0.5rem 0;
+  ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    li {
+      margin: 0 1rem;
+      a {
+        &:hover {
+          text-decoration: none;
+        }
+      }
+      .active-link {
+        color: black;
+        font-weight: bold;
+      }
+    }
+  }
+}
+.app-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 1rem;
+  .book-list-and-details {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+    width: 60%;
+    .book-list {
+      width: 50%;
+      align-items: center;
+      .single-book {
+        background-color: #bee3ec;
+        margin: 0.2rem 0;
+        padding: 0.1rem 0.2rem;
+        list-style: none;
+        &:hover {
+          cursor: pointer;
+          background: #daf1f7;
+        }
+      }
+    }
+    #book-details {
+      width: 50%;
+      padding: 0rem 1rem;
+    }
+  }
+  .add-book-form {
+    width: 40%;
+  }
+  .author-list {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    table {
+      width: 60%;
+    }
+    form {
+      width: 30%;
+    }
+  }
+}

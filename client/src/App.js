@@ -1,31 +1,20 @@
-import React, { Component } from 'react';
-import ApolloClient from 'apollo-boost';
-import { ApolloProvider } from 'react-apollo'
-import './App.css';
-import BookList from './components/BookList'
-import AddBook from './components/AddBook'
+import React from 'react';
+import './index.scss';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import Nav from 'components/nav';
+import { GraphQLURL } from 'config';
 
 const client = new ApolloClient({
-  uri:'http://localhost:8000/graphql'
-})
+  uri: GraphQLURL,
+  cache: new InMemoryCache(),
+});
 
-class App extends Component {
-  render() {
-    return (
-      <ApolloProvider client={client}>
-        <div className="App">
-         <div className="conatiner row">
-            <div className="col-md-6">
-              <BookList />
-            </div>
-            <div className="col-md-6">
-              <AddBook />
-            </div>
-         </div>
-        </div>
-      </ApolloProvider>
-    );
-  }
+function App() {
+  return (
+    <ApolloProvider client={client}>
+      <Nav />
+    </ApolloProvider>
+  );
 }
 
 export default App;

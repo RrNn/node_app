@@ -1,11 +1,20 @@
-const mongoose = require('mongoose')
+const mongoose = require('../database/config');
+
+const Book = require('./book.js');
 
 const Schema = mongoose.Schema;
 
-const authorSchema = new Schema({
-	name:String,
-	age:Number,
-	
-})
+const AuthorSchema = new Schema(
+  {
+    name: String,
+    age: Number,
+  },
+  { timestamps: true }
+);
 
-module.exports = mongoose.model('Author',authorSchema)
+AuthorSchema.pre('remove', { query: true, document: true }, function(next) {
+  Book.deleteMany({ authorId: this._id }).exec();
+  next();
+});
+
+module.exports = mongoose.model('Author', AuthorSchema);
