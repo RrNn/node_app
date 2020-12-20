@@ -1,60 +1,34 @@
-import React, { Component } from 'react';
-import { getBookQuery } from '../queries/queries';
-import { graphql } from 'react-apollo';
-import NoInternet from './NoInternet';
+import React from 'react';
+import { graphql } from '@apollo/client/react/hoc';
+import { getBookQuery } from 'queries/queries';
+import Error from 'components/error';
 
-class BookDetails extends Component {
-	displayBookDetails() {
-		const { book } = this.props.data;
-		if (!window.navigator.onLine) {
-			return <NoInternet />;
-		} else if (book) {
-			return (
-				<div>
-					<p>
-						<strong>Name:&nbsp;</strong>
-						{book.name}
-					</p>
-					<p>
-						<strong>Genre:&nbsp;</strong>
-						{book.genre}
-					</p>
-					<p>
-						<strong>Author:&nbsp;</strong>
-						{book.author.name}
-					</p>
-					<p>
-						<strong>Other books by {book.author.name}</strong>
-					</p>
-					{book.author.books.map((book) => {
-						return <li key={book.id}>{book.name}</li>;
-					})}
-				</div>
-			);
-		} else {
-			return (
-				<div>
-					<strong>Click on a book to view details here</strong>
-				</div>
-			);
-		}
-	}
-	render() {
-		return (
-			<div className="container">
-				<legend className="text-center">Book Details</legend>
-				{this.displayBookDetails()}
-			</div>
-		);
-	}
-}
+const BookDetails = ({ data }) => {
+  const { loading, book, error: { graphQLErrors } = {} } = data;
+  return (
+    <div id="book-details">
+      <p>Book Details</p>
+      {graphQLErrors ? <Error errors={graphQLErrors} /> : null}
+      {loading ? 'Loading...' : null}
+      {book ? (
+        <>
+          <h3>{`${book.name} by ${book.author.name}`}</h3>
+          <p>Other books by {book.author.name} are:</p>
+          <ul>
+            {book.author.books.map((book) => (
+              <li key={book.id}>{book.name}</li>
+            ))}
+          </ul>
+        </>
+      ) : null}
+    </div>
+  );
+};
 
 export default graphql(getBookQuery, {
-	options: (props) => {
-		return {
-			variables: {
-				id: props.bookid,
-			},
-		};
-	},
+  options: (props) => ({
+    variables: {
+      id: props.bookId,
+    },
+  }),
 })(BookDetails);
